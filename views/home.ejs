@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Complete CSS (Your updated styling is included here) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Body Styling */
+        body {
+            background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+            color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background: linear-gradient(90deg, #202020, #151515);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: #f5f5f5;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #50c878;
+        }
+
+        /* Task List Styling */
+        .main {
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 20px 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0;
+            background: #333;
+            border-radius: 8px;
+          
+        }
+
+        li {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #444;
+           
+        }
+        .task-item{
+            margin-bottom: 15px;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .task-title {
+            font-size: 16px;
+            color: #f5f5f5;
+            flex-grow: 1;
+        }
+
+        /* Task Buttons */
+        .task-btn {
+            text-decoration: none;
+            padding: 6px 12px;
+            margin-left: 10px;
+            font-size: 14px;
+            border-radius: 4px;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        #editbtn {
+            background-color: #4caf50;
+        }
+
+        #deletebtn {
+            background-color: #f44336;
+        }
+
+        #viewbtn {
+            background-color: #2196f3;
+        }
+
+        /* Hover Effects */
+        #editbtn:hover {
+            background-color: #45a049;
+        }
+
+        #deletebtn:hover {
+            background-color: #e53935;
+        }
+
+        #viewbtn:hover {
+            background-color: #1e88e5;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            li {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .task-btn {
+                margin: 5px 0 0;
+            }
+        }
+     
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navbar -->
+        <div class="navbar">
+            <div class="left">
+                <img src="https://cdn.dribbble.com/users/2446756/screenshots/5102086/dribbble_shot_hd_4x.png" alt="Logo" style="width: 50px; height: auto;">
+            </div>
+            <div class="right">
+                <a href="/home">Home</a>
+                <a href="/create">Create New Task</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main">
+            <h1>Your Tasks</h1>
+            <ul class="task-list">
+                <% allTask.forEach((tasks) => { %>
+                <li class="task-item">
+                    <span class="task-title"><%= tasks.title %></span>
+                    <a href="/edit/<%= tasks._id %>" id="editbtn" class="task-btn">Edit</a>
+                    <a href="/delete/<%= tasks._id %>" id="deletebtn" class="task-btn">Delete</a>
+                    <a href="/view/<%= tasks._id %>" id="viewbtn" class="task-btn">View Task</a>
+                </li>
+                <% }); %>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

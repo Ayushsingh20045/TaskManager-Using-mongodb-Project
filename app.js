@@ -51,25 +51,107 @@ app.get('/',(req,res)=>{
  //post route for login
  app.post('/',async(req,res)=>{
 const{username,password}=req.body;
-loggedInUser=username;
-let userExist = await userModel.findOne({username});
+
+let userExist = await userModel.findOne({username,password});
 if(!userExist){
    res.render('signup')
 }
+
 else
+loggedInUser=userExist;
 res.redirect('/home')
 
  })
 
 
 
-
-
-
-app.get('/home',(req,res)=>{
+//create task:
+app.get('/create',async(req,res)=>{
+    if(!loggedInUser){
+        return res.redirect('/')
+    }
+    const allTask = await taskModel.find({userid:loggedInUser._id})
+    res.render("create",{user:loggedInUser,tasks:allTask})
     
-   res.send("working")
 })
+
+app.post('/create',async(req,res)=>{
+   
+    const{title,description}=req.body;
+    if(!loggedInUser){
+        return res.redirect('/');
+    }
+    
+    const createTask = await taskModel.create({
+        title:title,
+        description:description,
+        userid:loggedInUser._id
+    })
+  res.redirect('/home')
+})
+
+ //home page:
+
+ app.get('/home',async(req,res)=>{
+   if(!loggedInUser){
+    return res.redirect('/')
+   }
+   const allTask = await taskModel.find({userid:loggedInUser._id})
+//    console.log(allTask)
+   res.render('home',{allTask})
+ })
+
+ //view route
+
+ app.get("/view/:id",async(req,res)=>{
+    const{id}=req.params;
+    if(!loggedInUser){
+        return res.redirect('/')
+    }
+    const view = await taskModel.findOne({_id:id})
+//   console.log(view)
+  res.render("view",{view:view})
+    
+ })
+
+ //delete route
+ app.get('/delete/:id',async(req,res)=>{
+    const{id}=req.params;
+    if(!loggedInUser){
+      return  res.redirect('/')
+    }
+ 
+    const Delete = await taskModel.findOneAndDelete({_id:id})
+    res.redirect('/home')
+
+ })
+
+ //edit route
+ app.get('/edit/:id',async(req,res)=>{
+    if(!loggedInUser){
+       return res.redirect('/');
+    }
+const task =await taskModel.findOne({_id:req.params.id})
+  res.render('edit',{task});
+ })
+ //post route for edit task:
+ app.post('/update/:id',async(req,res)=>{
+    const{title,description}=req.body;
+    const{id}=req.params;
+    if(!loggedInUser){
+        return res.redirect('/');
+     }
+     const user = await taskModel.findOne({_id:req.params.id});
+     const update= await taskModel.findOneAndUpdate(
+        {_id:id},
+        {title,description},
+        {new:true}
+     )
+     res.redirect('/home')
+ })
+
+
+
 
 
 app.listen(3000);

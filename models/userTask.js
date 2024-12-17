@@ -26,11 +26,15 @@ const taskSchema = new mongoose.Schema({
     type: Date,
     default: Date.now, // Automatically sets the task update date
   },
+ 
   userid:{
     type:mongoose.Schema.Types.ObjectId,
     ref:'user'
-  }
-});
+  }, 
+
+ 
+},
+{timestamps:true});
 
 // Create the Task model
 
